@@ -49,7 +49,7 @@ public class Move extends Event
 		if(hcCompleted)
 		{
 			/* add the new HC*/
-			sim.hc.add(new HamCycle(ant.path, ant.pathw + sim.g.edgew(ant.path.peekLast(), sim.g.getnode(sim.p.nestidx))));
+			sim.checkHC(new HamCycle(ant.path, ant.pathw + sim.g.edgew(ant.path.peekLast(), sim.g.getnode(sim.p.nestidx))));
 			
 			/* add pheromone to the path & events to evaporate them*/
 			MNode[] apath = ant.path.toArray(new MNode[ant.path.size()]);
@@ -59,13 +59,13 @@ public class Move extends Event
 			{
 				MNode[] edge = {apath[i], apath[i+1]};
 				/* only add a new evap if there is none pending already */
-				if(sim.g.edgep(edge[0], edge[1]) == 0)
+				if(!(sim.g.edgep(edge[0], edge[1]) > 0))
 				{
 					sim.addPecEvent(new Evap(getts() + Parameters.expRandom(sim.p.eta), edge, sim.p.rho));					
 				}
 				/* and add the pheromones! */
-				sim.g.setp(edge[0], edge[1], sim.g.edgep(edge[0],edge[1])-newpheromones);
-				sim.g.setp(edge[1], edge[0], sim.g.edgep(edge[1],edge[0])-newpheromones);
+				sim.g.setp(edge[0], edge[1], sim.g.edgep(edge[0],edge[1])+newpheromones);
+				sim.g.setp(edge[1], edge[0], sim.g.edgep(edge[1],edge[0])+newpheromones);
 			}
 			
 			/* clear path and get to nest */

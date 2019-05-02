@@ -28,7 +28,7 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 	AcoGraph g;
 	Ant[] ants;
 	Parameters p = new Parameters();
-	LinkedList<HamCycle> hc = new LinkedList<HamCycle>();
+	HamCycle hc = null;
 
 	/**
 	 * Creates a Ant Colony Optimization for Traveling Salesman Problem simulator
@@ -126,6 +126,10 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 			el = (Element)graph;
 			p.nestidx = Integer.parseInt(el.getAttribute("nestnode"))-1; /* for index purposes NEST - 1*/
 			p.totalnodes = Integer.parseInt(el.getAttribute("nbnodes"));
+			
+			/* check */
+			if(p.nestidx < 0 || p.totalnodes < 0)
+				System.exit(1);
 
 			/* set the graph */
 			MNode[] nodes = new MNode[p.totalnodes];
@@ -196,6 +200,10 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 					}
 				}
 			}
+			
+			/* check */
+			if(p.alpha<0 || p.beta<0 || p.delta<0 || p.eta<0 || p.rho<0 || p.plevel<0 || p.antcolsize<0)
+				System.exit(1);
 
 		}
 		catch (Exception ex)
@@ -204,6 +212,21 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 		}
 	}
 
+	/**
+	 * Replaces the hamiltonian cycle which we keep track with the lowest weighted HC
+	 * @param newhc a new HC to test
+	 */
+	public void checkHC(HamCycle newhc)
+	{
+		if(hc == null)
+		{
+			hc = newhc;
+		}
+		else if(hc.totalw > newhc.totalw)
+		{
+			hc = newhc;
+		}
+	}
 	/**
 	 * Prints the observation with the shortest HC
 	 */
@@ -214,22 +237,8 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 		System.out.println("     Number of move events: " + this.mevent);
 		System.out.println("     Number of evaporaiton events: " + this.eevent);
 		System.out.print("     Hamiltonian cycle: ");
-
-		int pathw = -1;
-		HamCycle chosenOne = null;
-		for(HamCycle iter : hc)
-		{
-			if(pathw == -1 || iter.totalw < pathw)
-			{
-				pathw = iter.totalw;
-				chosenOne = iter;
-			}
-		}
-		if(chosenOne != null)
-		{
-			chosenOne.print();
-		}
-
+		if(hc != null)
+			hc.print();
 		System.out.println();
 	}
 }
