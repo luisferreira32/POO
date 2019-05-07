@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author g19
  *
  */
-public class MNode
+public class MNode implements INode
 {
 	int id;
 	int idx;
@@ -48,9 +48,9 @@ public class MNode
 	 * Neighbor adding function, one at a time
 	 * @param n new neighbor
 	 */
-	public void setneigh(MNode n)
+	public void setneigh(INode n)
 	{
-		neigh.add(n);
+		neigh.add((MNode)n);
 	}
 	
 	/**

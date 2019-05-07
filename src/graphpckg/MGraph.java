@@ -7,7 +7,7 @@ package graphpckg;
  */
 public class MGraph implements Graph
 {
-	MNode[] nodes;
+	INode[] nodes;
 	int[][] weights;
 	
 	/**
@@ -16,7 +16,7 @@ public class MGraph implements Graph
 	 * @param n nodes
 	 * @param w weight matrix
 	 */
-	public MGraph( MNode[] n, int[][] w)
+	public MGraph( INode[] n, int[][] w)
 	{
 		weights = w;
 		nodes = n;
@@ -29,8 +29,9 @@ public class MGraph implements Graph
 	 */
 	public int edgew(Object n1, Object n2)
 	{
-		MNode mn1 = (MNode)n1; MNode mn2 = (MNode)n2;
-		return weights[mn1.idx][mn2.idx];
+		INode mn1 = (INode)n1;
+		INode mn2 = (INode)n2;
+		return weights[mn1.getidx()][mn2.getidx()];
 	}
 	
 	/**
@@ -39,11 +40,11 @@ public class MGraph implements Graph
 	 */
 	public int pathw(Object[] path)
 	{
-		MNode[] mpath = (MNode[]) path;
+		INode[] mpath = (INode[]) path;
 		int totalw = 0;
 		
 		for(int i = 0; i < path.length-1; i++)
-			totalw += weights[mpath[i].idx][mpath[i+1].idx];
+			totalw += weights[mpath[i].getidx()][mpath[i+1].getidx()];
 		
 		return totalw;
 	}
@@ -53,7 +54,7 @@ public class MGraph implements Graph
 	 * @param index
 	 * @return node
 	 */
-	public MNode getnode(int index)
+	public INode getnode(int index)
 	{
 		return nodes[index];
 	}

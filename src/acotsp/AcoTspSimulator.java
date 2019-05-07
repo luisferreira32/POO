@@ -134,7 +134,7 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 				System.exit(1);
 
 			/* set the graph */
-			MNode[] nodes = new MNode[p.totalnodes];
+			INode[] nodes = new MNode[p.totalnodes];
 			int[][] weights = new int[p.totalnodes][p.totalnodes];
 			for(int i = 0; i < p.totalnodes; i++)
 			{

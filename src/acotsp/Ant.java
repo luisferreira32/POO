@@ -12,13 +12,13 @@ import java.util.LinkedList;
 public class Ant 
 {
 	int pathw = 0;
-	LinkedList<MNode> path = new LinkedList<MNode>();
+	LinkedList<INode> path = new LinkedList<INode>();
 	
 	/**
 	 * Creates an object ant with its path starting on the nest
 	 * @param nest
 	 */
-	public Ant(MNode nest)
+	public Ant(INode nest)
 	{
 		pathw = 0;
 		path.add(nest);

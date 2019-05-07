@@ -18,7 +18,7 @@ public class AcoMGraph extends MGraph implements AcoGraph
 	 * @param n are the nodes of the graph
 	 * @param w are the weights of the edges
 	 */
-	public AcoMGraph(MNode[] n, int[][] w)
+	public AcoMGraph(INode[] n, int[][] w)
 	{
 		super(n,w);
 		/* should be a zeroed square matrix */
@@ -44,8 +44,8 @@ public class AcoMGraph extends MGraph implements AcoGraph
 	 */
 	public void setp(Object n1, Object n2, double p)
 	{
-		MNode mn1 = (MNode)n1;
-		MNode mn2 = (MNode)n2;
+		INode mn1 = (INode)n1;
+		INode mn2 = (INode)n2;
 		pheromones[mn1.getidx()][mn2.getidx()] = p;
 	}
 	
@@ -57,8 +57,8 @@ public class AcoMGraph extends MGraph implements AcoGraph
 	 */
 	public double edgep(Object n1, Object n2)
 	{
-		MNode mn1 = (MNode)n1;
-		MNode mn2 = (MNode)n2;
+		INode mn1 = (INode)n1;
+		INode mn2 = (INode)n2;
 		return pheromones[mn1.getidx()][mn2.getidx()];
 	}
 	

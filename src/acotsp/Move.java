@@ -37,7 +37,7 @@ public class Move extends Event
 		boolean hcCompleted = false;
 		
 		/* First check if HC is completed IF a neighbor is the nest && we've been all over the place  */
-		for(MNode iter : ant.path.peekLast().getneigh())
+		for(INode iter : ant.path.peekLast().getneigh())
 		{
 			if(iter.equals(ant.path.peekFirst()) && ant.path.size() == sim.p.totalnodes)
 			{
@@ -52,12 +52,12 @@ public class Move extends Event
 			sim.checkHC(new HamCycle(ant.path, ant.pathw + sim.g.edgew(ant.path.peekLast(), sim.g.getnode(sim.p.nestidx))));
 			
 			/* add pheromone to the path & events to evaporate them*/
-			MNode[] apath = ant.path.toArray(new MNode[ant.path.size()]);
+			INode[] apath = ant.path.toArray(new MNode[ant.path.size()]);
 			double newpheromones = Parameters.expRandom(sim.p.plevel*sim.g.gettw()/sim.g.pathw(ant.path.toArray(new MNode[ant.path.size()])));
 			
 			for(int i = 0; i<apath.length-1; i++)
 			{
-				MNode[] edge = {apath[i], apath[i+1]};
+				INode[] edge = {apath[i], apath[i+1]};
 				/* only add a new evap if there is none pending already */
 				if(!(sim.g.edgep(edge[0], edge[1]) > 0))
 				{
@@ -76,23 +76,23 @@ public class Move extends Event
 		
 		/* Then, we need to move! So we'll follow the rules */
 		double traveltime = 0;
-		MNode destination = null;
+		INode destination = null;
 		
-		ArrayList<MNode> J = new ArrayList<MNode>();
+		ArrayList<INode> J = new ArrayList<INode>();
 		J.addAll(ant.path.peekLast().getneigh());
 		J.removeAll(ant.path);
 
 		/* no new nodes, uniform */
 		if(J.isEmpty())
 		{
-			ArrayList<MNode> neighs = new ArrayList<MNode>();
+			ArrayList<INode> neighs = new ArrayList<INode>();
 			neighs.addAll(ant.path.peekLast().getneigh());
 			destination = neighs.get(Parameters.intuniformRandom(neighs.size()));
 			traveltime = Parameters.expRandom(sim.p.delta*sim.g.edgew(ant.path.peekLast(),destination));
 			
 			/* so let's clear the wrong path */
-			ListIterator<MNode> litr = ant.path.listIterator();
-			MNode niter = null, secondvisit = null;
+			ListIterator<INode> litr = ant.path.listIterator();
+			INode niter = null, secondvisit = null;
 			while( litr.hasNext())
 			{
 				niter = litr.next();
@@ -105,7 +105,7 @@ public class Move extends Event
 			/* the destination will NEVER be the last of a list, not on neigh */
 			if(secondvisit != null)
 			{
-				List<MNode> erase = ant.path.subList(ant.path.indexOf(secondvisit), ant.path.size()-1);
+				List<INode> erase = ant.path.subList(ant.path.indexOf(secondvisit), ant.path.size()-1);
 				ant.pathw -= sim.g.pathw(erase.toArray(new MNode[erase.size()]));
 				litr.remove();
 				while(litr.hasNext())
@@ -124,7 +124,7 @@ public class Move extends Event
 			double[] Pk = new double[J.size()], ck = new double[J.size()];
 			double c = 0, land, boat = 0;
 			int i = 0;
-			MNode last = ant.path.peekLast();
+			INode last = ant.path.peekLast();
 			
 			/* calculating the probabilities */
 			for(i = 0; i < Pk.length; i++)

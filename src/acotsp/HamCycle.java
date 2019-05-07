@@ -1,6 +1,6 @@
 package acotsp;
 
-import graphpckg.MNode;
+import graphpckg.INode;
 import java.util.LinkedList;
 
 /**
@@ -18,12 +18,12 @@ public class HamCycle
 	 * @param p is the HC path
 	 * @param tw is the total weight of the path
 	 */
-	public HamCycle(LinkedList<MNode> p, int tw)
+	public HamCycle(LinkedList<INode> p, int tw)
 	{
 		totalw = tw;
 		path = new int[p.size()];
 		int i = 0;
-		for(MNode niter : p)
+		for(INode niter : p)
 		{
 			path[i] = niter.getid();
 			i++;

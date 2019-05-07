@@ -10,14 +10,14 @@ import dss.*;
  */
 public class Evap extends Event
 {
-	MNode[] edge;
+	INode[] edge;
 	double quantity;
 	
 	/**
 	 * @param tic time of the event
 	 * @param quant is quantity of pheromone to evaporate 
 	 */
-	public Evap(double tic, MNode[] e, double quant)
+	public Evap(double tic, INode[] e, double quant)
 	{
 		super(tic);
 		edge = e;
