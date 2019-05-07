@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 /**
  * Extension of a discrete stochastic simulator based on a pending event container
@@ -87,8 +88,9 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 	{
 		try
 		{
-			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document doc = dBuilder.parse("./"+filename); /* CHANGE THIS DEPENDING ON FILE PLACE */
+			DocumentBuilderFactory dFactory = DocumentBuilderFactory.newInstance();			
+			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(new InputSource("./"+filename)); /* CHANGE THIS DEPENDING ON FILE PLACE */
 			doc.getDocumentElement().normalize();
 
 			Node root = doc.getDocumentElement();
@@ -203,12 +205,19 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 			
 			/* check */
 			if(p.alpha<0 || p.beta<0 || p.delta<0 || p.eta<0 || p.rho<0 || p.plevel<0 || p.antcolsize<0)
-				System.exit(1);
+			{
+				System.out.println("Invalid parameters. Simulator will now exit");
+				System.out.println("...");
+				System.exit(1);				
+			}
 
 		}
 		catch (Exception ex)
 		{
+			System.out.println("Simulator will now exit");
+			System.out.println("...");
 			ex.printStackTrace();
+			System.exit(1);
 		}
 	}
 

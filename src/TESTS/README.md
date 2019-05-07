@@ -16,6 +16,6 @@ The example taken from the project description with only one ant, less time and 
 
 # 4
 
-A test with an invalid parameter, the program should exit(1)
+A test with an invalid parameter, the program should exit(1).
 
 # 5
