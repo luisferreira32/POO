@@ -44,7 +44,7 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 		for(int i = 0; i<p.antcolsize; i++)
 		{
 			ants[i] = new Ant((MNode)g.getnode(p.nestidx));
-			addPecEvent(new Move(0, ants[i]));
+			addPecEvent((IEvent)new Move(0, ants[i]));
 		}
 		/* and pray that main actually starts the simulation */
 	}

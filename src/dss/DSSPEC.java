@@ -7,7 +7,7 @@ package dss;
  */
 public class DSSPEC implements DSS
 {
-	PEC pec = new PEC();
+	IPEC pec = new PEC();
 	
 	/**
 	 * Does a discrete stochastic simulation based on a pending event contained
@@ -28,7 +28,7 @@ public class DSSPEC implements DSS
 	 * Adding an event e to the pending event container
 	 * @param e
 	 */
-	public void addPecEvent(Event e)
+	public void addPecEvent(IEvent e)
 	{
 		pec.addEvent(e);
 	}

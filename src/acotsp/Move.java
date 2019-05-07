@@ -61,7 +61,7 @@ public class Move extends Event
 				/* only add a new evap if there is none pending already */
 				if(!(sim.g.edgep(edge[0], edge[1]) > 0))
 				{
-					sim.addPecEvent(new Evap(getts() + Parameters.expRandom(sim.p.eta), edge, sim.p.rho));					
+					sim.addPecEvent((IEvent)new Evap(getts() + Parameters.expRandom(sim.p.eta), edge, sim.p.rho));					
 				}
 				/* and add the pheromones! */
 				sim.g.setp(edge[0], edge[1], sim.g.edgep(edge[0],edge[1])+newpheromones);
@@ -154,7 +154,7 @@ public class Move extends Event
 		}
 		
 		/* then set up the timer for the next move on this ant */
-		sim.addPecEvent(new Move(getts()+traveltime, ant));
+		sim.addPecEvent((IEvent)new Move(getts()+traveltime, ant));
 	}
 }
 

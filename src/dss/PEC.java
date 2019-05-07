@@ -8,7 +8,7 @@ import java.util.ListIterator;
  * @author g19
  *
  */
-public class PEC
+public class PEC implements IPEC
 {
 	LinkedList<IEvent> eventList= new LinkedList<IEvent>();
 

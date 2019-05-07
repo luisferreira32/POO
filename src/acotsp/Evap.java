@@ -40,7 +40,7 @@ public class Evap extends Event
 		}
 		else
 		{
-			sim.addPecEvent(new Evap(getts() + Parameters.expRandom(sim.p.eta), edge, sim.p.rho));
+			sim.addPecEvent((IEvent)new Evap(getts() + Parameters.expRandom(sim.p.eta), edge, sim.p.rho));
 		}
 	}
 }
