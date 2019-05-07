@@ -16,6 +16,12 @@ The example taken from the project description with only one ant, less time and 
 
 # 4
 
-A test with an invalid parameter, the program should exit(1).
+A big graph with lot of ants and "low" density (using half of high density)
 
 # 5
+
+A big graph with lot of ants and high density
+
+# e
+
+For parameters error check
