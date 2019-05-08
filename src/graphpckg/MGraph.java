@@ -29,9 +29,17 @@ public class MGraph implements Graph
 	 */
 	public int edgew(Object n1, Object n2)
 	{
-		INode mn1 = (INode)n1;
-		INode mn2 = (INode)n2;
-		return weights[mn1.getidx()][mn2.getidx()];
+		if(n1 instanceof INode && n2 instanceof INode)
+		{
+			INode mn1 = (INode)n1;
+			INode mn2 = (INode)n2;
+			return weights[mn1.getidx()][mn2.getidx()];
+		}
+		else
+		{
+			/* error handler to be made... */
+			return 0;
+		}
 	}
 	
 	/**
@@ -40,6 +48,11 @@ public class MGraph implements Graph
 	 */
 	public int pathw(Object[] path)
 	{
+		if(!(path instanceof INode[]))
+		{
+			/* error handler to be made... */
+			return 0;
+		}
 		INode[] mpath = (INode[]) path;
 		int totalw = 0;
 		

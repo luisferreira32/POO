@@ -44,9 +44,12 @@ public class AcoMGraph extends MGraph implements AcoGraph
 	 */
 	public void setp(Object n1, Object n2, double p)
 	{
-		INode mn1 = (INode)n1;
-		INode mn2 = (INode)n2;
-		pheromones[mn1.getidx()][mn2.getidx()] = p;
+		if(n1 instanceof INode && n2 instanceof INode)
+		{
+			INode mn1 = (INode)n1;
+			INode mn2 = (INode)n2;
+			pheromones[mn1.getidx()][mn2.getidx()] = p;
+		}
 	}
 	
 	/**
@@ -57,9 +60,17 @@ public class AcoMGraph extends MGraph implements AcoGraph
 	 */
 	public double edgep(Object n1, Object n2)
 	{
-		INode mn1 = (INode)n1;
-		INode mn2 = (INode)n2;
-		return pheromones[mn1.getidx()][mn2.getidx()];
+		if(n1 instanceof INode && n2 instanceof INode)
+		{
+			INode mn1 = (INode)n1;
+			INode mn2 = (INode)n2;
+			return pheromones[mn1.getidx()][mn2.getidx()];
+		}
+		else
+		{
+			/* error handler here... */
+			return 0;
+		}
 	}
 	
 	/**
