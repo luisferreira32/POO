@@ -14,15 +14,17 @@ import java.util.ListIterator;
 public class Move extends Event
 {
 	Ant ant;
+	INode dest;
 	
 	/**
 	 * @param tic is the time of the event
 	 * @param a is the ant that will move
 	 */
-	public Move(double tic, Ant a)
+	public Move(double tic, Ant a, INode d)
 	{
 		super(tic);
 		ant = a;
+		dest = d;
 	}
 	
 	/**
@@ -34,19 +36,9 @@ public class Move extends Event
 	public void run(DSS dss)
 	{
 		AcoTspSimulator sim = (AcoTspSimulator) dss;
-		boolean hcCompleted = false;
 		
-		/* First check if HC is completed IF a neighbor is the nest && we've been all over the place  */
-		for(INode iter : ant.path.peekLast().getneigh())
-		{
-			if(iter.equals(ant.path.peekFirst()) && ant.path.size() == sim.p.totalnodes)
-			{
-				hcCompleted = true;
-			}
-		}
-		
-		/* if it is, proceed to store HC & restart ant path */
-		if(hcCompleted)
+		/* The hc is completed if the destination is the NEST and all nodes have been visited */
+		if(dest.equals(sim.g.getnode(sim.p.nestidx)) && ant.path.size() == sim.p.totalnodes)
 		{
 			/* add the new HC*/
 			sim.checkHC(new HamCycle(ant.path, ant.pathw + sim.g.edgew(ant.path.peekLast(), sim.g.getnode(sim.p.nestidx))));
@@ -74,87 +66,44 @@ public class Move extends Event
 			ant.path.add((MNode)sim.g.getnode(sim.p.nestidx));
 		}
 		
-		/* Then, we need to move! So we'll follow the rules */
-		double traveltime = 0;
-		INode destination = null;
+		/* Then we move */
 		
-		ArrayList<INode> J = new ArrayList<INode>();
-		J.addAll(ant.path.peekLast().getneigh());
-		J.removeAll(ant.path);
-
-		/* no new nodes, uniform */
-		if(J.isEmpty())
+		/* so let's clear the wrong path if the destination has already been visited */
+		ListIterator<INode> litr = ant.path.listIterator();
+		INode niter = null, secondvisit = null;
+		while( litr.hasNext())
 		{
-			ArrayList<INode> neighs = new ArrayList<INode>();
-			neighs.addAll(ant.path.peekLast().getneigh());
-			destination = neighs.get(Parameters.intuniformRandom(neighs.size()));
-			traveltime = Parameters.expRandom(sim.p.delta*sim.g.edgew(ant.path.peekLast(),destination));
-			
-			/* so let's clear the wrong path */
-			ListIterator<INode> litr = ant.path.listIterator();
-			INode niter = null, secondvisit = null;
-			while( litr.hasNext())
+			niter = litr.next();
+			if(niter.equals(dest))
+			{
+				secondvisit = niter;
+				break;
+			}
+		}
+		
+		/* the destination will NEVER be the last of a list, not on neigh */
+		if(secondvisit != null)
+		{
+			List<INode> erase = ant.path.subList(ant.path.indexOf(secondvisit), ant.path.size()-1);
+			ant.pathw -= sim.g.pathw(erase.toArray(new MNode[erase.size()]));
+			litr.remove();
+			while(litr.hasNext())
 			{
 				niter = litr.next();
-				if(niter.equals(destination))
-				{
-					secondvisit = niter;
-					break;
-				}
-			}
-			/* the destination will NEVER be the last of a list, not on neigh */
-			if(secondvisit != null)
-			{
-				List<INode> erase = ant.path.subList(ant.path.indexOf(secondvisit), ant.path.size()-1);
-				ant.pathw -= sim.g.pathw(erase.toArray(new MNode[erase.size()]));
 				litr.remove();
-				while(litr.hasNext())
-				{
-					niter = litr.next();
-					litr.remove();
-				}
 			}
 			/* and add the destination */
-			ant.path.add(destination);
+			ant.path.add(dest);
 		}
-		/* new nodes, probabilities based on the formula */
+		/* if there was no second visit it's just a normal move */
 		else
-		{
-			/* variables to calculate probabilities */
-			double[] Pk = new double[J.size()], ck = new double[J.size()];
-			double c = 0, land, boat = 0;
-			int i = 0;
-			INode last = ant.path.peekLast();
-			
-			/* calculating the probabilities */
-			for(i = 0; i < Pk.length; i++)
-			{
-				ck[i] = (sim.p.alpha + sim.g.edgep(last,J.get(i)))/(sim.p.beta + sim.g.edgew(last,J.get(i)));
-				c += ck[i];
-			}
-			for(i = 0; i < Pk.length; i++)
-			{
-				Pk[i] = ck[i]/c;
-			}
-			
-			/* generate a random double with uniform distribution */
-			land = Parameters.doubleuniformRandom(1.0); i = 0;
-			while(boat < land)
-			{
-				/* the sum of all probabilities is 1 */
-				boat += Pk[i];
-				i++;
-			}
-			/* where the boat landed it's the node! notice i++ is before the check */
-			destination = J.get(i-1);
-			
-			ant.path.add(destination);
-			ant.pathw += sim.g.edgew(last, destination);
-			traveltime = Parameters.expRandom(sim.p.delta*sim.g.edgew(last, destination));
+		{			
+			ant.path.add(dest);
+			ant.pathw += sim.g.edgew(ant.path.peekLast(), dest);			
 		}
 		
 		/* then set up the timer for the next move on this ant */
-		sim.addPecEvent((IEvent)new Move(getts()+traveltime, ant));
+		sim.addPecEvent((IEvent)ant.setmove((IAcoTspSimulator)sim, getts()));
 	}
 }
 
