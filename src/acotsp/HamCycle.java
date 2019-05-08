@@ -8,7 +8,7 @@ import java.util.LinkedList;
  * @author g19
  *
  */
-public class HamCycle
+class HamCycle
 {
 	int totalw;
 	int[] path;

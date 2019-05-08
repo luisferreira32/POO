@@ -7,7 +7,7 @@ import java.util.Random;
  * @author g19
  *
  */
-public class Parameters
+class Parameters
 {
 	double alpha;
 	double beta;
