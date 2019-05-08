@@ -130,7 +130,7 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 			
 			/* check */
 			if(p.nestidx < 0 || p.totalnodes < 0)
-				System.exit(1);
+				throw(new Exception("Invalid parameters"));	
 
 			/* set the graph */
 			INode[] nodes = new MNode[p.totalnodes];
@@ -205,9 +205,7 @@ public class AcoTspSimulator extends DSSPEC implements IAcoTspSimulator
 			/* check */
 			if(p.alpha<0 || p.beta<0 || p.delta<0 || p.eta<0 || p.rho<0 || p.plevel<0 || p.antcolsize<0)
 			{
-				System.out.println("Invalid parameters. Simulator will now exit");
-				System.out.println("...");
-				System.exit(1);				
+				throw(new Exception("Invalid parameters"));		
 			}
 
 		}

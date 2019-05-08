@@ -20,8 +20,8 @@
         </node>
     </graph>
     <events>
-        <move alpha="1.0" delta="0.2"/>
-        <!-- move alpha="1.0" beta="1.0" delta="0.2"/-->
+        <!--move alpha="1.0" delta="0.2"/-->
+        <move alpha="1.0" beta="1.0" delta="0.2"/>
         <evaporation eta="-2.0" rho="10.0"/>
     </events>
 </simulation>
